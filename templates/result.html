@@ -5,7 +5,7 @@
     <title>GReporting | Final Output</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-slate-200 p-10">
+<body class="bg-slate-200 p-10 font-sans">
     <div class="max-w-4xl mx-auto">
         <div class="flex justify-between mb-4 no-print">
             <button onclick="window.print()" class="bg-black text-white px-6 py-2 rounded font-bold shadow-lg hover:bg-gray-800">🖨️ Save as PDF</button>
@@ -15,47 +15,50 @@
         <div class="bg-white shadow-2xl p-16 rounded-sm border-t-[12px] border-indigo-600">
             <div class="flex justify-between items-start border-b pb-8 mb-8">
                 <div>
-                    <h1 class="text-4xl font-black text-slate-900 tracking-tighter">BUG REPORT</h1>
+                    <h1 class="text-4xl font-black text-slate-900 tracking-tighter uppercase">Bug Report</h1>
                     <p class="text-indigo-600 font-bold tracking-widest">{{ report.vultype }}</p>
                 </div>
                 <div class="text-right">
-                    <div class="text-xs font-bold text-slate-400 uppercase">Status: PENDING TRIAGE</div>
                     <div class="text-sm font-bold text-slate-900">{{ report.date }}</div>
-                    <div class="mt-2 inline-block px-3 py-1 bg-red-600 text-white text-xs font-bold rounded">{{ report.severity }}</div>
+                    <div class="mt-2 inline-block px-3 py-1 bg-red-600 text-white text-xs font-bold rounded shadow-sm">{{ report.severity }}</div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-3 gap-8 mb-10 text-sm">
-                <div class="bg-slate-50 p-4 rounded"><strong>Reference:</strong><br>{{ report.ref }}</div>
-                <div class="bg-slate-50 p-4 rounded"><strong>Target:</strong><br>{{ report.target }}</div>
-                <div class="bg-slate-50 p-4 rounded"><strong>Endpoint:</strong><br>{{ report.endpoint }}</div>
+            <div class="grid grid-cols-2 gap-8 mb-10 text-sm">
+                <div class="bg-slate-50 p-4 rounded border"><strong>Target:</strong><br>{{ report.target }}</div>
+                <div class="bg-slate-50 p-4 rounded border"><strong>Affected Endpoint:</strong><br>{{ report.endpoint }}</div>
             </div>
 
             <div class="space-y-8">
                 <section>
-                    <h2 class="text-lg font-black border-b border-slate-200 mb-3">REPRODUCTION STEPS</h2>
-                    <pre class="whitespace-pre-wrap text-slate-700 leading-relaxed font-mono text-sm">{{ report.steps }}</pre>
+                    <h2 class="text-lg font-black border-b border-slate-200 mb-3 text-indigo-700 uppercase tracking-wide">Vulnerability Description</h2>
+                    <p class="text-slate-700 leading-relaxed text-sm">{{ report.description }}</p>
                 </section>
 
                 <section>
-                    <h2 class="text-lg font-black border-b border-slate-200 mb-3">PROOF OF CONCEPT (POC)</h2>
-                    <div class="bg-slate-900 text-green-400 p-5 rounded font-mono text-sm">
+                    <h2 class="text-lg font-black border-b border-slate-200 mb-3 text-indigo-700 uppercase tracking-wide">Proof of Concept (PoC)</h2>
+                    <pre class="whitespace-pre-wrap text-slate-700 leading-relaxed font-mono text-xs bg-slate-50 p-4 border rounded">{{ report.steps }}</pre>
+                </section>
+
+                <section>
+                    <h2 class="text-lg font-black border-b border-slate-200 mb-3 text-indigo-700 uppercase tracking-wide">Attack Payload</h2>
+                    <div class="bg-slate-900 text-green-400 p-5 rounded font-mono text-sm border-l-4 border-green-500 shadow-inner">
                         {{ report.payload }}
                     </div>
                 </section>
 
                 <section>
-                    <h2 class="text-lg font-black border-b border-slate-200 mb-3">IMPACT ASSESSMENT</h2>
-                    <p class="text-red-700 font-semibold italic">{{ report.impact }}</p>
+                    <h2 class="text-lg font-black border-b border-slate-200 mb-3 text-red-600 uppercase tracking-wide font-bold">Security Impact</h2>
+                    <p class="text-red-700 font-bold italic p-4 bg-red-50 rounded border border-red-100">{{ report.impact }}</p>
                 </section>
-            </div>
 
-            <div class="mt-20 pt-8 border-t text-[10px] text-slate-400 flex justify-between uppercase tracking-widest">
-                <span>GReporting Security Engine</span>
-                <span>Confidential Report</span>
+                <section class="pt-6 border-t">
+                    <h2 class="text-lg font-black border-b border-slate-200 mb-3 text-indigo-700 uppercase tracking-wide">Remediation</h2>
+                    <p class="bg-blue-50 p-4 text-blue-800 rounded text-sm border border-blue-100">{{ report.recommendation }}</p>
+                </section>
             </div>
         </div>
     </div>
-    <style>@media print { .no-print { display: none; } body { background: white; p:0; } }</style>
+    <style>@media print { .no-print { display: none; } body { background: white; padding: 0; } .bg-white { shadow: none; border: none; } }</style>
 </body>
 </html>

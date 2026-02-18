@@ -1,15 +1,14 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request
 from datetime import datetime
 
 app = Flask(__name__)
 
-# Professional Database for Logic
+# Predefined professional data
 VULN_DB = {
-    "SQL Injection": {"sev": "Critical", "ref": "CWE-89", "desc": "Direct database query manipulation."},
-    "Cross-Site Scripting (XSS)": {"sev": "High", "ref": "CWE-79", "desc": "Malicious script injection in browsers."},
-    "IDOR": {"sev": "High", "ref": "CWE-639", "desc": "Unauthorized access to private objects."},
-    "Broken Auth": {"sev": "Critical", "ref": "CWE-287", "desc": "Faulty session management or login logic."},
-    "Rate Limiting": {"sev": "Low", "ref": "CWE-799", "desc": "Lack of request throttling on sensitive endpoints."}
+    "SQL Injection": {"sev": "Critical", "desc": "Allows unauthorized database manipulation.", "rec": "Use parameterized queries and input validation."},
+    "Cross-Site Scripting (XSS)": {"sev": "High", "desc": "Allows execution of malicious scripts in the victim's browser.", "rec": "Implement CSP and output encoding."},
+    "IDOR": {"sev": "High", "desc": "Direct access to objects without authorization.", "rec": "Implement strict object-level access controls."},
+    "Open Redirect": {"sev": "Medium", "desc": "Redirects users to malicious external sites.", "rec": "Use a whitelist for all redirect URLs."}
 }
 
 @app.route('/')
@@ -20,7 +19,7 @@ def index():
 def generate():
     data = request.form
     report_data = {
-        "title": f"[{data.get('severity')}] {data.get('vultype')} @ {data.get('target')}",
+        "title": f"[{data.get('severity')}] {data.get('vultype')} on {data.get('target')}",
         "date": datetime.now().strftime("%d %b %Y"),
         "vultype": data.get('vultype'),
         "target": data.get('target'),
@@ -29,7 +28,8 @@ def generate():
         "steps": data.get('steps'),
         "payload": data.get('payload'),
         "impact": data.get('impact'),
-        "ref": VULN_DB.get(data.get('vultype'), {}).get('ref', 'N/A')
+        "description": VULN_DB.get(data.get('vultype'), {}).get('desc', 'N/A'),
+        "recommendation": VULN_DB.get(data.get('vultype'), {}).get('rec', 'N/A')
     }
     return render_template('result.html', report=report_data)
 
